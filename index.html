@@ -6,18 +6,32 @@
     <script src='angular.min.js'></script>
 </head>
 <body ng-controller="main_controller">
+    <input type="text" ng-model="query[queryBy]" placeholder="Search by name" >
     <table>
-        <tr ng-repeat="element in list">
+        <tr ng-repeat="element in list| filter:query| orderBy: sort_by">
             <td>{{element.name}}</td>
             <td>{{element.joining_date}}</td>
             <td>{{element.age}}</td>
         </tr>
     </table>
+    <input type="checkbox" ng-model="sort" ng-change="update_sort_by()">Sort by Joining Date
     <script type="text/javascript">
         
         var app = angular.module('interviewApp',[]);
-        app.controller('main_controller', ['$scope',
-            function($scope){
+        app.controller('main_controller', ['$scope', function($scope){
+            $scope.query = {};
+            $scope.queryBy = "$";
+            function update_sort_by()
+            {
+                if($scope.sort)
+                {
+                    $scope.sort_by = "age";
+                }
+                else{
+                    $scope.sort_by = "";   
+                }
+            }
+            $scope.update_sort_by = update_sort_by;
             var list = [{
                     name: 'Jon',
                     joining_date: '23/10/2015',
@@ -39,7 +53,6 @@
                     age:20
                 }
             ];
-            console.log(typeOf()
             $scope.list = list;
             function convert_joining_date_string_to_date_object(date_string)
             {
