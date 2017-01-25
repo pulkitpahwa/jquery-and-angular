@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script src='jquery.js'></script>
+    <style type="text/css">
+        .developer{
+            width:31%;
+            float:left;
+            display:inline-block;
+            border: 1px solid black;
+            margin-right:0.28%;
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div id="developers"></div>
+    <p>Number of boxes: <span id="developer_count"></span></p>
+</body>
+<script type="text/javascript">        
+    $(document).ready(function(){
+        var list = [{
+                name: 'Jon',
+                designation: 'Front end developer',
+                joining_date: '23/10/2015',
+                age:23
+            },
+            {
+                name: 'Viki',
+                designation: 'iOS developer',
+                joining_date: '24/01/2015',
+                age:20
+            },
+            {
+                name: 'Manoj',
+                designation: 'Back End Developer',
+                joining_date: '25/10/2015',
+                age:43
+            }
+        ];
+
+        function convert_joining_date_string_to_date_object(date_string)
+        {
+            date_string = date_string.split("/").join("-");
+            var pattern = /(\d{2})-(\d{2})-(\d{4})/;
+            var dt = new Date(date_string.replace(pattern,'$3-$2-$1'));
+            return dt;
+        }
+
+        for(i=0; i<list.length; i++)
+        {
+            var developers_data = $("#developers").html();
+            console.log(list[i]["joining_date"]);
+            list[i]["joining_date"] = convert_joining_date_string_to_date_object(list[i]["joining_date"]);
+            var div_data = `
+            <div class='developer'>
+                <h3 title="${list[i]['joining_date']}">
+                    ${list[i]["name"]}
+                </h3>
+                <h4>${list[i]['designation']}</h4>
+            </div>`;
+            developers_data += div_data;
+            $("#developers").html(developers_data);
+            $("#developer_count").html($(".developer").length);
+        }
+        var timer = setInterval(function(){
+            var developers_count = $(".developer").length;
+            if( developers_count!= 6)
+            {
+                list.push(list[developers_count-3]);
+                var original_date = list[developers_count-3]["joining_date"];
+
+                list[developers_count-3]["joining_date"] = new Date(
+                    original_date.setDate(original_date.getDate() + 1));
+                var age = list[developers_count-3]["age"];
+                age = age.toString();
+                list[developers_count-3]["age"] = age.split("").reverse().join("");
+                var data = list[developers_count-3];
+                var div_data = `
+                    <div class='developer'>
+                    <h3 title="${data['joining_date']}">${data["name"]}</h3>
+                    <h4>Frontend developer</h4>
+                </div>`;
+                developers_data += div_data;
+                $("#developers").html(developers_data);
+                $("#developer_count").html($(".developer").length);
+            }
+            else{
+                clearInterval(timer);
+            }
+        }, 1000);//replace this with 60000. 1000 is for 1 seconds
+    });
+
+</script>
+</html>
