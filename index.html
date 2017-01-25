@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="interviewApp">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script src='angular.min.js'></script>
+</head>
+<body ng-controller="main_controller">
+    <table>
+        <tr ng-repeat="element in list">
+            <td>{{element.name}}</td>
+            <td>{{element.joining_date}}</td>
+            <td>{{element.age}}</td>
+        </tr>
+    </table>
+    <script type="text/javascript">
+        
+        var app = angular.module('interviewApp',[]);
+        app.controller('main_controller', ['$scope',
+            function($scope){
+            var list = [{
+                    name: 'Jon',
+                    joining_date: '23/10/2015',
+                    age:23
+                },
+                {
+                    name: 'Viki',
+                    joining_date: '24/01/2015',
+                    age:20
+                },
+                {
+                    name: 'Abc',
+                    joining_date: '25/10/2015',
+                    age:43
+                },
+                {
+                    name: 'XYZ',
+                    joining_date: '28/10/2015',
+                    age:20
+                }
+            ];
+            console.log(typeOf()
+            $scope.list = list;
+            function convert_joining_date_string_to_date_object(date_string)
+            {
+                date_string = date_string.split("/").join("-");
+                var pattern = /(\d{2})-(\d{2})-(\d{4})/;
+                var dt = new Date(joining_date.replace(pattern,'$3-$2-$1'));
+                return dt;
+            }
+        }]);
+    </script>
+</body>
+</html>
